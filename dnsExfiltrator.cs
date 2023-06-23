@@ -11,7 +11,7 @@ As a DLL:
 */
 using System;
 using System.Net;
-using System.Web.Script.Serialization;
+using System.Text.Json;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -441,7 +441,7 @@ namespace DNSExfiltrator
 			string responsePacket = String.Empty;
 			responsePacket = webClient.DownloadString(dohQuery);
 			responsePacket = responsePacket.Replace("\\\"",""); // Replies with "data": "\"OK\"" causes JSON parsing to fail because of the uneeded escaped double-quote  
-			var responseObject = new JavaScriptSerializer().Deserialize<Response>(responsePacket);
+			var responseObject = JsonSerializer.Deserialize<Response>(responsePacket);
 			
 			if (responseObject.Answer.Count >= 1) {
 					return responseObject.Answer[0].data;
